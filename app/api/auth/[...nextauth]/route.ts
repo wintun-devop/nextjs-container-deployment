@@ -24,15 +24,12 @@ const handler = NextAuth({
                     });
                     if (response.status == 200 && response.ok) {
                         const res = await response.json();
-                        console.log("suss",res)
                         return {
                             id: res.result.id,
                             name: res.result.username,
                         };
                     } else {
                         const errorResponse = await response.json();
-                        console.log("err",errorResponse)
-                        console.error('Authorization error:', errorResponse);
                         throw new Error(errorResponse.message || 'Invalid credentials');
                     }
                 } catch (e) {
@@ -63,7 +60,7 @@ const handler = NextAuth({
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: '/auth/signin',
+        signIn: '/auth/login',
     },
     debug: process.env.NODE_ENV === 'development',
 });
