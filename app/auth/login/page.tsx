@@ -1,14 +1,16 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 const Login: React.FC = () => {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const { data: session, status } = useSession();
+  console.log("login_page_sess",session)
+  console.log("login_page_status",status)
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const callbackUrl = '/';
@@ -28,7 +30,23 @@ const Login: React.FC = () => {
       setError(e?.error);
     }
   };
-
+    useEffect(() => {
+    if (status === 'loading') {
+      // Redirect to home or callbackUrl
+      router.push('/');
+    }
+  }, [status, router]);
+  // ✅ Show loading spinner while session is loading
+  if (status === 'loading') {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-75 mx-auto mb-4"></div>
+          <p className="text-gray-700">Checking session...</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-md">
@@ -77,7 +95,6 @@ const Login: React.FC = () => {
       </div>
     </div>
   );
-
 };
 
 export default Login;

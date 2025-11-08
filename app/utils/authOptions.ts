@@ -32,7 +32,8 @@ export const authOptions:AuthOptions = {
                         return {
                             id: a.payload.sub,
                             username: a.payload.username,
-                            access_token:res.result.AuthenticationResult.AccessToken
+                            access_token:res.result.AuthenticationResult.AccessToken,
+                            authenticated:true
                         };
                     } else {
                         const errorResponse = await response.json();
