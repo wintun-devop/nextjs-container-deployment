@@ -1,11 +1,10 @@
-import { authOptions } from '@/app/utils/authOptions';
-import NextAuth from 'next-auth';
-// import { JWT } from 'next-auth/jwt';
-// import CredentialsProvider from 'next-auth/providers/credentials';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { AuthOptions } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 
 
-/* 
-const handler = NextAuth({
+
+export const authOptions:AuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -51,7 +50,7 @@ const handler = NextAuth({
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token }: { session: any, token: any }) {
             if (token) {
                 session.user = {
                     id: token.id as string,
@@ -60,17 +59,9 @@ const handler = NextAuth({
             return session;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET as string,
     pages: {
         signIn: '/auth/login',
     },
     debug: process.env.NODE_ENV === 'development',
-});
-
-export { handler as GET, handler as POST }; 
-*/
-
-// Export the NextAuth handler using the extracted options
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST }; 
+}
