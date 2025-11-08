@@ -1,5 +1,6 @@
-import { authOptions } from '@/app/utils/authOptions';
 import NextAuth from 'next-auth';
+import { authOptions } from '@/app/utils/authOptions';
+
 // import { JWT } from 'next-auth/jwt';
 // import CredentialsProvider from 'next-auth/providers/credentials';
 

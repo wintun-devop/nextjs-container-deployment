@@ -1,6 +1,8 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { AuthOptions } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
+import { AuthOptions } from 'next-auth';
+
+import { verifyToken,decodeToken } from '@/app/utils/jwt';
 
 
 
@@ -25,10 +27,11 @@ export const authOptions:AuthOptions = {
                     });
                     if (response.status == 200 && response.ok) {
                         const res = await response.json();
-                        console.log("res",res)
+                        const r = res.result.AuthenticationResult.AccessToken;
+                        const a = decodeToken(r);
                         return {
-                            id: res.result.id,
-                            name: res.result.username,
+                            id: a.payload.sub,
+                            username: a.payload.username,
                             access_token:res.result.AuthenticationResult.AccessToken
                         };
                     } else {
@@ -48,7 +51,9 @@ export const authOptions:AuthOptions = {
     callbacks: {
         async jwt({ token, user }: { token: JWT; user: any }) {
             if (user) {
-                token.id = user.id;
+                token.id = user.id,
+                token.username=user.username,
+                token.access_token = user.access_token
             }
             return token;
         },
@@ -56,6 +61,8 @@ export const authOptions:AuthOptions = {
             if (token) {
                 session.user = {
                     id: token.id as string,
+                    username:token.username as string,
+                    access_token:token.access_token as string
                 };
             }
             return session;
