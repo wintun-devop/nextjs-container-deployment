@@ -25,9 +25,11 @@ export const authOptions:AuthOptions = {
                     });
                     if (response.status == 200 && response.ok) {
                         const res = await response.json();
+                        console.log("res",res)
                         return {
                             id: res.result.id,
                             name: res.result.username,
+                            access_token:res.result.AuthenticationResult.AccessToken
                         };
                     } else {
                         const errorResponse = await response.json();
