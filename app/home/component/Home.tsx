@@ -1,11 +1,17 @@
 "use client";
 import React from 'react';
 import { signOut } from 'next-auth/react'
+import AuthHeader from '@/app/components/header';
+import {  useSession } from 'next-auth/react';
+
 
 const UserProfile = () => {
     const handleLogout = () => { signOut({ callbackUrl: '/' }); };
+    const { data: session, status } = useSession();
+   
     return (
         <div className="min-h-screen bg-gray-100 p-6">
+            <AuthHeader />
             <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
                 {/* Profile Header */}
                 <div className="flex items-center space-x-4">
@@ -18,14 +24,14 @@ const UserProfile = () => {
                         <h2 className="text-xl font-semibold">John Doe</h2>
                         <p className="text-gray-600">johndoe@example.com</p>
                     </div>
-                    <div>
+                    {/* <div>
                         <button
                             className="absolute top-6 right-6 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"
                             onClick={handleLogout}
                         >
                             Logout
                         </button>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Account Details */}
