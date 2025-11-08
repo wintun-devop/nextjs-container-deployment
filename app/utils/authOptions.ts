@@ -1,12 +1,12 @@
-import NextAuth from 'next-auth';
-import { authOptions } from '@/app/utils/authOptions';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { JWT } from 'next-auth/jwt';
+import { AuthOptions } from 'next-auth';
 
-// import { JWT } from 'next-auth/jwt';
-// import CredentialsProvider from 'next-auth/providers/credentials';
+import { verifyToken,decodeToken } from '@/app/utils/jwt';
 
 
-/* 
-const handler = NextAuth({
+
+export const authOptions:AuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -27,9 +27,13 @@ const handler = NextAuth({
                     });
                     if (response.status == 200 && response.ok) {
                         const res = await response.json();
+                        const r = res.result.AuthenticationResult.AccessToken;
+                        const a = decodeToken(r);
                         return {
-                            id: res.result.id,
-                            name: res.result.username,
+                            id: a.payload.sub,
+                            username: a.payload.username,
+                            access_token:res.result.AuthenticationResult.AccessToken,
+                            authenticated:true
                         };
                     } else {
                         const errorResponse = await response.json();
@@ -48,30 +52,26 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user }: { token: JWT; user: any }) {
             if (user) {
-                token.id = user.id;
+                token.id = user.id,
+                token.username=user.username,
+                token.access_token = user.access_token
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token }: { session: any, token: any }) {
             if (token) {
                 session.user = {
                     id: token.id as string,
+                    username:token.username as string,
+                    access_token:token.access_token as string
                 };
             }
             return session;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET as string,
     pages: {
         signIn: '/auth/login',
     },
     debug: process.env.NODE_ENV === 'development',
-});
-
-export { handler as GET, handler as POST }; 
-*/
-
-// Export the NextAuth handler using the extracted options
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST }; 
+}
