@@ -6,9 +6,7 @@ import {  useSession } from 'next-auth/react';
 
 
 const UserProfile = () => {
-    const handleLogout = () => { signOut({ callbackUrl: '/' }); };
-    const { data: session, status } = useSession();
-   
+
     return (
         <div className="min-h-screen bg-gray-100 p-6">
             <AuthHeader />
@@ -24,14 +22,6 @@ const UserProfile = () => {
                         <h2 className="text-xl font-semibold">John Doe</h2>
                         <p className="text-gray-600">johndoe@example.com</p>
                     </div>
-                    {/* <div>
-                        <button
-                            className="absolute top-6 right-6 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
-                    </div> */}
                 </div>
 
                 {/* Account Details */}
