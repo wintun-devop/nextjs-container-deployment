@@ -1,8 +1,7 @@
 "use client";
 import React from 'react';
-import { signOut } from 'next-auth/react'
 import AuthHeader from '@/app/components/header';
-import {  useSession } from 'next-auth/react';
+
 
 
 const UserProfile = () => {
