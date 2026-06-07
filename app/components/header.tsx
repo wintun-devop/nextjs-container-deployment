@@ -7,17 +7,24 @@ import { signOut, useSession } from 'next-auth/react';
 type NavItem = { label: string; href: string };
 
 const NAV: NavItem[] = [
-  { label: 'Dashboard', href: '/dashboard' },
-  { label: 'Profile', href: '/profile' },
-  { label: 'My Listings', href: '/listings' },
-  { label: 'Messages', href: '/messages' },
-  { label: 'Favorites', href: '/favorites' },
+  { label: 'Dashboard', href: '/main' },
+  { label: 'Sales', href: '/sales' },
+  { label: 'Inventory', href: '/inventory' },
+  { label: 'Purchasing', href: '/purchasing' },
+  { label: 'Finance', href: '/finance' },
 ];
 
 const  AuthHeader: React.FC = ()  => {
   const [open, setOpen] = useState(false); // mobile slide-over
   const [menuOpen, setMenuOpen] = useState(false); // desktop user dropdown
   const { data: session } = useSession();
+  const displayName = session?.user?.username ?? session?.user?.id ?? 'ERP Admin';
+  const initials = displayName
+    .split(' ')
+    .map((part) => part.charAt(0))
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
   const menuRef = useRef<HTMLDivElement | null>(null);
   const avatarButtonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -58,10 +65,10 @@ const  AuthHeader: React.FC = ()  => {
             <Link href="/" className="flex items-center gap-3">
               <span className="inline-block rounded-md bg-green-600 p-2">
                 <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M12 2L2 7v7c0 5 5 9 10 9s10-4 10-9V7L12 2z" />
+                  <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z" />
                 </svg>
               </span>
-              <span className="text-lg font-semibold">homey</span>
+              <span className="text-lg font-semibold">WinTech ERP</span>
             </Link>
           </div>
 
@@ -78,10 +85,10 @@ const  AuthHeader: React.FC = ()  => {
             ))}
 
             <Link
-              href="/add-listing"
+              href="/sales/new"
               className="ml-4 inline-flex items-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700"
             >
-              Add New Listing
+              New Order
             </Link>
           </nav>
 
@@ -96,14 +103,12 @@ const  AuthHeader: React.FC = ()  => {
                 aria-haspopup="menu"
                 className="flex items-center gap-3 rounded-md px-2 py-1 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
               >
-                <img
-                  src="/avatar-placeholder.png"
-                  alt="User avatar"
-                  className="h-8 w-8 rounded-full object-cover"
-                />
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-xs font-semibold text-green-700">
+                  {initials}
+                </span>
                 <div className="text-left">
-                  <div className="font-medium text-sm">{session?.user?.id ?? 'Mike Parker'}</div>
-                  <div className="text-xs text-gray-500">Done</div>
+                  <div className="font-medium text-sm">{displayName}</div>
+                  <div className="text-xs text-gray-500">Online</div>
                 </div>
 
                 <svg
@@ -126,12 +131,12 @@ const  AuthHeader: React.FC = ()  => {
                 >
                   <div className="py-1">
                     <Link
-                      href="/profile"
+                      href="/account"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                       role="menuitem"
                       onClick={() => setMenuOpen(false)}
                     >
-                      View Profile
+                      My Account
                     </Link>
 
                     <Link
@@ -179,10 +184,10 @@ const  AuthHeader: React.FC = ()  => {
               <div className="flex items-center gap-3">
                 <span className="inline-block rounded-md bg-green-600 p-2">
                   <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                    <path d="M12 2L2 7v7c0 5 5 9 10 9s10-4 10-9V7L12 2z" />
+                    <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z" />
                   </svg>
                 </span>
-                <span className="font-semibold">homey</span>
+                <span className="font-semibold">WinTech ERP</span>
               </div>
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2">
                 <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -207,20 +212,22 @@ const  AuthHeader: React.FC = ()  => {
 
                 <li>
                   <Link
-                    href="/add-listing"
+                    href="/sales/new"
                     className="mt-2 block rounded-md bg-green-600 px-3 py-2 text-sm font-medium text-white"
                     onClick={() => setOpen(false)}
                   >
-                    Add New Listing
+                    New Order
                   </Link>
                 </li>
               </ul>
 
               <div className="mt-6 flex items-center gap-3 border-t pt-4">
-                <img src="/avatar-placeholder.png" alt="User avatar" className="h-10 w-10 rounded-full object-cover" />
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-sm font-semibold text-green-700">
+                  {initials}
+                </span>
                 <div>
-                  <div className="font-medium">{session?.user?.id ?? 'Mike Parker'}</div>
-                  <div className="text-xs text-gray-500">Done</div>
+                  <div className="font-medium">{displayName}</div>
+                  <div className="text-xs text-gray-500">Online</div>
                 </div>
               </div>
 

@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
-    "next": "^16.1.0",
+    "next": "^16.2.7",
     "next-auth": "^4.24.11",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
